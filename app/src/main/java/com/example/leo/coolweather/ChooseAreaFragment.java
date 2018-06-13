@@ -81,6 +81,17 @@ public class ChooseAreaFragment extends Fragment {
                 }else if (curLevel == LEVEL_CITY){
                     curCity = cityList.get(position);
                     queryDistricts();
+                }else if (curLevel == LEVEL_DISTRICT){
+                    String weatherId = districtList.get(position).getWeatherId();
+                    if (getActivity() instanceof MainActivity) {
+                        WeatherActivity.actionStart(getActivity(), weatherId);
+                        getActivity().finish();
+                    }else if (getActivity() instanceof WeatherActivity){
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefreshLayout.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
                 }
             }
         });
