@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.leo.coolweather.gson.Forecast;
 import com.example.leo.coolweather.gson.Weather;
+import com.example.leo.coolweather.service.AutoUpdateService;
 import com.example.leo.coolweather.util.HttpUtil;
 import com.example.leo.coolweather.util.Utility;
 
@@ -39,7 +40,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
-    private String token = "db7ebf645a2a45fa9aadce6edd14503c";
+    public static final String token = "db7ebf645a2a45fa9aadce6edd14503c";
     public DrawerLayout drawerLayout;
     private Button navButton;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -193,7 +194,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void loadBingPic2(){
-        final String requestBingPic = "https://cn.bing.com/HPImageArchive.aspx?idx=0&n=1&format=js";
+        String requestBingPic = "https://cn.bing.com/HPImageArchive.aspx?idx=0&n=1&format=js";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -268,6 +269,9 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     public static void actionStart(Context context, String weatherId){
